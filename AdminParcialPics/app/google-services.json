@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "291928939459",
+    "firebase_url": "https://parcialpicsdef-default-rtdb.firebaseio.com",
+    "project_id": "parcialpicsdef",
+    "storage_bucket": "parcialpicsdef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291928939459:android:24263bd8c7aebf6f7c7b76",
+        "android_client_info": {
+          "package_name": "com.example.adminparcialpics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291928939459-naemhme4md1oqv2hbf16u5cc8a6f1r4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnmEB3wAO5YFEbaoaNyDUI0x7KyhOYp48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291928939459-naemhme4md1oqv2hbf16u5cc8a6f1r4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291928939459:android:f207989e0d573ba87c7b76",
+        "android_client_info": {
+          "package_name": "com.example.inventarioparciales"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291928939459-naemhme4md1oqv2hbf16u5cc8a6f1r4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnmEB3wAO5YFEbaoaNyDUI0x7KyhOYp48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291928939459-naemhme4md1oqv2hbf16u5cc8a6f1r4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
