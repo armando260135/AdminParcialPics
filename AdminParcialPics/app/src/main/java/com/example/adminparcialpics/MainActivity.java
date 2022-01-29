@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -79,15 +80,30 @@ public class MainActivity extends AppCompatActivity {
                 codigoicono=ingresaricono.getText().toString();
                 iddrawable = getResources().getIdentifier(codigoicono, "drawable", getPackageName());
 
-                MateriasHome materiasHome = new MateriasHome();
-                materiasHome.setFoto(iddrawable);
-                materiasHome.setNombre(materia);
-                materiasHome.setCodigo(codigo);
-                //instancia de la bd en firebase
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                //para el id el reference push y se envia a la bd en fire...
-                DatabaseReference reference = database.getReference("Asignaturas");
-                reference.push().setValue(materiasHome);
+                if (TextUtils.isEmpty(codigoicono)){
+                    ingresaricono.setError("Ingrese un icono");
+                    ingresaricono.requestFocus();
+                }else if (TextUtils.isEmpty(codigo)){
+                    etCodigo.setError("Ingrese un codigo");
+                    etCodigo.requestFocus();
+                }else if (TextUtils.isEmpty(materia)) {
+                    etMateria.setError("Ingrese una materia");
+                    etMateria.requestFocus();
+                }else {
+                    MateriasHome materiasHome = new MateriasHome();
+                    materiasHome.setFoto(iddrawable);
+                    materiasHome.setNombre(materia);
+                    materiasHome.setCodigo(codigo);
+                    //instancia de la bd en firebase
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    //para el id el reference push y se envia a la bd en fire...
+                    DatabaseReference reference = database.getReference("Asignaturas");
+                    reference.push().setValue(materiasHome);
+
+                    etCodigo.setText("");
+                    etMateria.setText("");
+                    ingresaricono.setText("");
+                }
             }
         });
     }
