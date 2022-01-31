@@ -59,7 +59,7 @@
         android:layout_gravity="center"/>
 
     <EditText
-        android:id="@+id/editTextTextImgFolder"
+        android:id="@+id/editTextTextImgFolder2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"
@@ -82,7 +82,7 @@
         android:layout_gravity="center"/>
 
     <EditText
-        android:id="@+id/editTextTextImgSubFolder"
+        android:id="@+id/editTextTextImgSubFolder2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"

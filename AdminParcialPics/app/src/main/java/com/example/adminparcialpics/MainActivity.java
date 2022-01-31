@@ -29,14 +29,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    Button addParciales,addMaterias;
+    Button addMaterias;
     CardView cardmateria,cardParcial;
     EditText etCodigo,etMateria,ingresaricono,ingresarmateriafoto, ingresarsemestrefoto ;
     private String materia, codigo,codigoicono;
     private int iddrawable;
     private AlertDialog.Builder dialogBuilder,dialogBuilder2;
     private AlertDialog dialog,dialog2;
+
+    //subir img
+    private static final int File = 1 ;
+
+    @SuppressLint("NonConstantResourceId")
+    @BindView(R.id.uploadImageView)
     ImageView mUploadImageView;
+    private ProgressDialog progressDialogParcial;
+    public static String carpeta = "";
+    public static String subcarpeta = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,21 +121,73 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder2 = new AlertDialog.Builder(this);
         final View contactPopupView2 = getLayoutInflater().inflate(R.layout.layou_bottom_anadir_parcial,null);
 //        contactPopupView2.setPadding(5,70,0,30);
-        ingresarmateriafoto = contactPopupView2.findViewById(R.id.editTextTextImgFolder);
-        ingresarsemestrefoto = contactPopupView2.findViewById(R.id.editTextTextImgSubFolder);
+        ingresarmateriafoto = contactPopupView2.findViewById(R.id.editTextTextImgFolder2);
+        ingresarsemestrefoto = contactPopupView2.findViewById(R.id.editTextTextImgSubFolder2);
         mUploadImageView = contactPopupView2.findViewById(R.id.uploadImageView);
         mUploadImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "asd", Toast.LENGTH_SHORT).show();
+                mUploadImageView.setOnClickListener(v -> fileUpload());
             }
         });
 
         dialogBuilder2.setView(contactPopupView2);
         dialog2 = dialogBuilder2.create();
         dialog2.show();
-//
-
     }
 
+    public void fileUpload() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        startActivityForResult(intent,File);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        carpeta = ingresarmateriafoto.getText().toString();
+        subcarpeta = ingresarsemestrefoto.getText().toString();
+        progressDialogParcial = new ProgressDialog(this);
+
+        if(requestCode == File){
+            if(resultCode == RESULT_OK){
+                progressDialogParcial.setTitle("Subiendo Imagen");
+                progressDialogParcial.setMessage("Por Favor Espere un Momento");
+                progressDialogParcial.setCancelable(false);
+                progressDialogParcial.show();
+
+                Uri FileUri = data.getData();
+
+                StorageReference Folder = FirebaseStorage.getInstance().getReference().child(carpeta);
+
+                StorageReference Folder2 = Folder.child(subcarpeta);
+
+                final StorageReference file_name = Folder2.child("file"+FileUri.getLastPathSegment());
+
+
+                file_name.putFile(FileUri).addOnSuccessListener(taskSnapshot -> file_name.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                    //codigo para realtime
+//                    HashMap<String,String> hashMap = new HashMap<>();
+//                    hashMap.put("link", String.valueOf(uri));
+
+//                    //mostrar la imagen que se acaba de subir
+////                    Glide.with(SubirParciales.this)
+////                            .load(uri)
+////                            .centerCrop()
+////                            .into(imageView);
+//                    myRef.setValue(hashMap);
+                    ingresarmateriafoto.setText("");
+                    ingresarsemestrefoto.setText("");
+                    progressDialogParcial.dismiss();
+                    Toast.makeText(MainActivity.this, "Imagen Subida Correctamente", Toast.LENGTH_LONG).show();
+                    Log.d("Mensaje", "Se subió correctamente");
+
+                }));
+
+            }
+
+        }
+
+    }
 }
