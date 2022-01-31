@@ -12,10 +12,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -31,11 +36,12 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     Button addMaterias;
     CardView cardmateria,cardParcial;
-    EditText etCodigo,etMateria,ingresaricono,ingresarmateriafoto, ingresarsemestrefoto ;
+    EditText etCodigo,etMateria,ingresaricono,ingresarmateriafoto;
     private String materia, codigo,codigoicono;
     private int iddrawable;
     private AlertDialog.Builder dialogBuilder,dialogBuilder2;
     private AlertDialog dialog,dialog2;
+    private Spinner spinnersemestres,spinnertipoparcial;
 
     //subir img
     private static final int File = 1 ;
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialogParcial;
     public static String carpeta = "";
     public static String subcarpeta = "";
+    public static String subsubcarpeta = "1 Parcial";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,10 +127,53 @@ public class MainActivity extends AppCompatActivity {
     public void crearNuevoParcial(){
         dialogBuilder2 = new AlertDialog.Builder(this);
         final View contactPopupView2 = getLayoutInflater().inflate(R.layout.layou_bottom_anadir_parcial,null);
-//        contactPopupView2.setPadding(5,70,0,30);
         ingresarmateriafoto = contactPopupView2.findViewById(R.id.editTextTextImgFolder2);
-        ingresarsemestrefoto = contactPopupView2.findViewById(R.id.editTextTextImgSubFolder2);
         mUploadImageView = contactPopupView2.findViewById(R.id.uploadImageView);
+        spinnersemestres = contactPopupView2.findViewById(R.id.spinnerSemestre);
+        spinnertipoparcial = contactPopupView2.findViewById(R.id.spinnerTipoParcial);
+
+        String []semestres={
+                "Semestre 2020 - 1",
+                "Semestre 2020 - 2",
+                "Semestre 2021 - 1",
+                "Semestre 2021 - 2",
+                "Semestre 2022 - 1",
+                "Semestre 2022 - 2"};
+
+        String []tipoParciales={
+                "1 Parcial",
+                "2 Parcial",
+                "Examen Final"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.text_spinner_semestre, semestres);
+        spinnersemestres.setAdapter(adapter);
+        ArrayAdapter<String> adapterTipoParcial = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, tipoParciales);
+        spinnertipoparcial.setAdapter(adapterTipoParcial);
+
+        spinnersemestres.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                subcarpeta = spinnersemestres.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinnertipoparcial.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                subsubcarpeta = spinnertipoparcial.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         mUploadImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         carpeta = ingresarmateriafoto.getText().toString();
-        subcarpeta = ingresarsemestrefoto.getText().toString();
         progressDialogParcial = new ProgressDialog(this);
 
         if(requestCode == File){
@@ -162,7 +211,9 @@ public class MainActivity extends AppCompatActivity {
 
                 StorageReference Folder2 = Folder.child(subcarpeta);
 
-                final StorageReference file_name = Folder2.child("file"+FileUri.getLastPathSegment());
+                StorageReference Folder3 = Folder2.child(subsubcarpeta);
+
+                final StorageReference file_name = Folder3.child("file"+FileUri.getLastPathSegment());
 
 
                 file_name.putFile(FileUri).addOnSuccessListener(taskSnapshot -> file_name.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -178,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
 ////                            .into(imageView);
 //                    myRef.setValue(hashMap);
                     ingresarmateriafoto.setText("");
-                    ingresarsemestrefoto.setText("");
                     progressDialogParcial.dismiss();
                     Toast.makeText(MainActivity.this, "Imagen Subida Correctamente", Toast.LENGTH_LONG).show();
                     Log.d("Mensaje", "Se subió correctamente");

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
 
     <TextView
         android:layout_width="match_parent"
@@ -39,7 +40,7 @@
         <ImageView
             android:id="@+id/uploadImageView"
             android:layout_width="wrap_content"
-            android:layout_height="220dp"
+            android:layout_height="205dp"
             android:layout_gravity="center"
             android:contentDescription="Subir"
             app:srcCompat="@drawable/uploads"
@@ -67,7 +68,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="19dp"
         android:background="@drawable/btn_materias_reg"
-        android:fontFamily="@font/typo_round_bold_demo"
         android:hint="Materia"
         android:paddingStart="10dp" />
 
@@ -81,17 +81,37 @@
         android:textStyle="bold"
         android:layout_gravity="center"/>
 
-    <EditText
-        android:id="@+id/editTextTextImgSubFolder2"
+    <Spinner
+        android:id="@+id/spinnerSemestre"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="19dp"
         android:layout_marginTop="5dp"
+        android:dropDownVerticalOffset="40dp"
+        android:background="@drawable/bg_spinner_semestre"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
+        android:fontFamily="@font/typo_round_bold_demo"
+        android:text="Tipo de Parcial"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
+
+    <Spinner
+        android:id="@+id/spinnerTipoParcial"
+        android:layout_width="match_parent"
+
+        android:layout_height="44dp"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="49dp"
-        android:background="@drawable/btn_materias_reg"
-        android:fontFamily="@font/typo_round_bold_demo"
-        android:hint="Semestre"
-        android:paddingStart="10dp"/>
+        android:layout_marginTop="5dp"
+        android:dropDownVerticalOffset="40dp"
+        android:background="@drawable/bg_spinner_semestre"/>
 
 </LinearLayout>
