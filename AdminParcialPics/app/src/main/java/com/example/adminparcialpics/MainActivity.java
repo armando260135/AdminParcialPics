@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
                     etCodigo.setText("");
                     ingresaricono.setText("");
+                    Toast.makeText(MainActivity.this, "Materia Registrada", Toast.LENGTH_SHORT).show();
                 }
             }
         });
