@@ -14,11 +14,13 @@
         android:padding="5dp">
 
         <TextView
+            android:id="@+id/cerrarparcial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/typo_round_bold_demo"
             android:gravity="center"
             android:padding="15dp"
+            android:drawableEnd="@drawable/cerrarp"
             android:text="Añadir Materia"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -83,17 +85,15 @@
             android:textSize="17sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/etxIngresarMateria"
+        <Spinner
+            android:id="@+id/spinnerMateriasma"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="19dp"
-            android:background="@drawable/btn_materias_reg"
-            android:fontFamily="@font/typo_round_bold_demo"
-            android:hint="nombre materia"
-            android:paddingStart="10dp" />
+            android:dropDownVerticalOffset="40dp"
+            android:background="@drawable/bg_spinner_semestre"/>
 
         <Button
             android:id="@+id/buttonShare12"

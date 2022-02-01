@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -34,14 +35,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    Button addMaterias;
-    CardView cardmateria,cardParcial;
-    EditText etCodigo,etMateria,ingresaricono,ingresarmateriafoto;
+    private Button addMaterias;
+    private CardView cardmateria,cardParcial;
+    private EditText etCodigo,ingresaricono;
+    private TextView cerrarsubirfoto,cerrarmateria;
     private String materia, codigo,codigoicono;
     private int iddrawable;
     private AlertDialog.Builder dialogBuilder,dialogBuilder2;
     private AlertDialog dialog,dialog2;
-    private Spinner spinnersemestres,spinnertipoparcial;
+    private Spinner spinnermaterias,spinnersemestres,spinnertipoparcial;
 
     //subir img
     private static final int File = 1 ;
@@ -81,18 +83,43 @@ public class MainActivity extends AppCompatActivity {
         contactPopupView.setPadding(5,0,0,40);
         ingresaricono = contactPopupView.findViewById(R.id.etxIngresarNombreIcono);
         etCodigo = contactPopupView.findViewById(R.id.etxIngresarCodMateria);
-        etMateria= contactPopupView.findViewById(R.id.etxIngresarMateria);
         addMaterias = contactPopupView.findViewById(R.id.buttonShare12);
+        cerrarmateria = contactPopupView.findViewById(R.id.cerrarparcial);
+        spinnermaterias = contactPopupView.findViewById(R.id.spinnerMateriasma);
 
-        dialogBuilder.setView(contactPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
+        String []materias={
+                "Base De Datos",
+                "Inteligencia Artificial",
+                "Calculo Integral",
+                "Calculo Diferencial",
+                "Analisis Numerico",
+                "Algebra Lineal",
+                "Circuitos Logicos",
+                "Electronica General",
+                "Emprendimiento",
+                "Ecuaciones Diferenciales",
+                "Ondas y Particulas"};
+
+        ArrayAdapter<String> adapterMaterias = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, materias);
+        spinnermaterias.setAdapter(adapterMaterias);
+
+        spinnermaterias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                materia = spinnermaterias.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                
+            }
+        });
+
 
         addMaterias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 codigo = etCodigo.getText().toString();
-                materia = etMateria.getText().toString();
                 codigoicono=ingresaricono.getText().toString();
                 iddrawable = getResources().getIdentifier(codigoicono, "drawable", getPackageName());
 
@@ -102,9 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 }else if (TextUtils.isEmpty(codigo)){
                     etCodigo.setError("Ingrese un codigo");
                     etCodigo.requestFocus();
-                }else if (TextUtils.isEmpty(materia)) {
-                    etMateria.setError("Ingrese una materia");
-                    etMateria.requestFocus();
                 }else {
                     MateriasHome materiasHome = new MateriasHome();
                     materiasHome.setFoto(iddrawable);
@@ -117,20 +141,45 @@ public class MainActivity extends AppCompatActivity {
                     reference.push().setValue(materiasHome);
 
                     etCodigo.setText("");
-                    etMateria.setText("");
                     ingresaricono.setText("");
                 }
             }
         });
+
+
+        cerrarmateria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBuilder.setView(contactPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
     }
 
     public void crearNuevoParcial(){
         dialogBuilder2 = new AlertDialog.Builder(this);
         final View contactPopupView2 = getLayoutInflater().inflate(R.layout.layou_bottom_anadir_parcial,null);
-        ingresarmateriafoto = contactPopupView2.findViewById(R.id.editTextTextImgFolder2);
         mUploadImageView = contactPopupView2.findViewById(R.id.uploadImageView);
         spinnersemestres = contactPopupView2.findViewById(R.id.spinnerSemestre);
         spinnertipoparcial = contactPopupView2.findViewById(R.id.spinnerTipoParcial);
+        spinnermaterias = contactPopupView2.findViewById(R.id.spinnerMaterias);
+        cerrarsubirfoto = contactPopupView2.findViewById(R.id.cerrar);
+
+        String []materias={
+                "Base De Datos",
+                "Inteligencia Artificial",
+                "Calculo Integral",
+                "Calculo Diferencial",
+                "Analisis Numerico",
+                "Algebra Lineal",
+                "Circuitos Logicos",
+                "Electronica General",
+                "Emprendimiento",
+                "Ecuaciones Diferenciales",
+                "Ondas y Particulas"};
 
         String []semestres={
                 "Semestre 2020 - 1",
@@ -145,10 +194,25 @@ public class MainActivity extends AppCompatActivity {
                 "2 Parcial",
                 "Examen Final"};
 
+        ArrayAdapter<String> adapterMaterias = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, materias);
+        spinnermaterias.setAdapter(adapterMaterias);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.text_spinner_semestre, semestres);
         spinnersemestres.setAdapter(adapter);
         ArrayAdapter<String> adapterTipoParcial = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, tipoParciales);
         spinnertipoparcial.setAdapter(adapterTipoParcial);
+
+        spinnermaterias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                carpeta = spinnermaterias.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         spinnersemestres.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -181,6 +245,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        cerrarsubirfoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog2.dismiss();
+            }
+        });
+
         dialogBuilder2.setView(contactPopupView2);
         dialog2 = dialogBuilder2.create();
         dialog2.show();
@@ -195,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        carpeta = ingresarmateriafoto.getText().toString();
         progressDialogParcial = new ProgressDialog(this);
 
         if(requestCode == File){
@@ -228,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
 ////                            .centerCrop()
 ////                            .into(imageView);
 //                    myRef.setValue(hashMap);
-                    ingresarmateriafoto.setText("");
                     progressDialogParcial.dismiss();
                     Toast.makeText(MainActivity.this, "Imagen Subida Correctamente", Toast.LENGTH_LONG).show();
                     Log.d("Mensaje", "Se subió correctamente");
