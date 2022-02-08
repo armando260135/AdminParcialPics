@@ -8,6 +8,9 @@ import androidx.cardview.widget.CardView;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,7 +30,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -268,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         progressDialogParcial = new ProgressDialog(this);
+        Bitmap originBitmap = null;
+        InputStream imageStream;
 
         if(requestCode == File){
             if(resultCode == RESULT_OK){
@@ -277,37 +286,62 @@ public class MainActivity extends AppCompatActivity {
                 progressDialogParcial.show();
 
                 Uri FileUri = data.getData();
-
                 StorageReference Folder = FirebaseStorage.getInstance().getReference().child(carpeta);
-
                 StorageReference Folder2 = Folder.child(subcarpeta);
-
                 StorageReference Folder3 = Folder2.child(subsubcarpeta);
-
                 final StorageReference file_name = Folder3.child("file"+FileUri.getLastPathSegment());
 
+                try {
+                    imageStream = getContentResolver().openInputStream(FileUri);
+                    originBitmap = BitmapFactory.decodeStream(imageStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
 
-                file_name.putFile(FileUri).addOnSuccessListener(taskSnapshot -> file_name.getDownloadUrl().addOnSuccessListener(uri -> {
+                if (originBitmap != null) {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    originBitmap.compress(Bitmap.CompressFormat.JPEG, 35, byteArrayOutputStream);
+                    UploadTask uploadTask = file_name.putBytes(byteArrayOutputStream.toByteArray());
 
-                    //codigo para realtime
-//                    HashMap<String,String> hashMap = new HashMap<>();
-//                    hashMap.put("link", String.valueOf(uri));
+                    uploadTask.continueWithTask(task -> {
+                        if (task.isSuccessful()) {
+                            progressDialogParcial.dismiss();
+                            Toast.makeText(MainActivity.this, "Imagen Subida Correctamente", Toast.LENGTH_LONG).show();
+                            Log.d("Mensaje", "Se subió correctamente");
+                            throw task.getException();
 
-//                    //mostrar la imagen que se acaba de subir
-////                    Glide.with(SubirParciales.this)
-////                            .load(uri)
-////                            .centerCrop()
-////                            .into(imageView);
-//                    myRef.setValue(hashMap);
-                    progressDialogParcial.dismiss();
-                    Toast.makeText(MainActivity.this, "Imagen Subida Correctamente", Toast.LENGTH_LONG).show();
-                    Log.d("Mensaje", "Se subió correctamente");
+                        }
+                        return null;
+                    }).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
 
-                }));
+                        }
+                    });
+                }
+            }
+            /** codigo para subir imagenes sin comprimir  **/
+
+//                file_name.putFile(FileUri).addOnSuccessListener(taskSnapshot -> file_name.getDownloadUrl().addOnSuccessListener(uri -> {
+//
+//                    //codigo para realtime
+////                    HashMap<String,String> hashMap = new HashMap<>();
+////                    hashMap.put("link", String.valueOf(uri));
+//
+////                    //mostrar la imagen que se acaba de subir
+//////                    Glide.with(SubirParciales.this)
+//////                            .load(uri)
+//////                            .centerCrop()
+//////                            .into(imageView);
+////                    myRef.setValue(hashMap);
+//                    progressDialogParcial.dismiss();
+//                    Toast.makeText(MainActivity.this, "Imagen Subida Correctamente", Toast.LENGTH_LONG).show();
+//                    Log.d("Mensaje", "Se subió correctamente");
+//
+//                }));
 
             }
 
         }
 
     }
-}
+
