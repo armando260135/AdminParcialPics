@@ -1,3 +1,67 @@
 <resources>
+
+    <!--  Nombre de la App  -->
     <string name="app_name">AdminParcialPics</string>
+
+    <!--  Imagen  -->
+    <string name="upload_image">Subiendo Imagen</string>
+    <string name="moment_upload">Por Favor Espere un Momento</string>
+    <string name="upload_succesful">Imagen Subida Correctamente</string>
+
+    <!--  Materias  -->
+    <string name="materia_succesful">Materia Registrada</string>
+    <string name="input_error">Ingrese un Codigo</string>
+    <string name="title_icono_materia">Ingresa el Codigo del Icono</string>
+    <string name="hint_icono_materia">codigo icono</string>
+    <string name="title_codigo_materia">Ingresa el Codigo de la Materia</string>
+    <string name="hint_codigo_materia">codigo materia</string>
+    <string name="title_nombre_materia">Ingresa el Nombre de la Materia</string>
+    <string name="title_btn_registar">Registrar</string>
+
+    <string-array name="listmaterias">
+        <item>Base De Datos</item>
+        <item>Inteligencia Artificial</item>
+        <item>Calculo Integral</item>
+        <item>Calculo Diferencial</item>
+        <item>Analisis Numerico</item>
+        <item>Algebra Lineal</item>
+        <item>Circuitos Logicos</item>
+        <item>Electronica General</item>
+        <item>Emprendimiento</item>
+        <item>Ecuaciones Diferenciales</item>
+        <item>Ondas y Particulas</item>
+    </string-array>
+
+    <string-array name="listsemestres">
+        <item>Semestre 2020 - 1</item>
+        <item>Semestre 2020 - 2</item>
+        <item>Semestre 2021 - 1</item>
+        <item>Semestre 2021 - 2</item>
+        <item>Semestre 2022 - 1</item>
+        <item>Semestre 2022 - 2</item>
+    </string-array>
+
+    <string-array name="listparciales">
+        <item>1 Parcial</item>
+        <item>2 Parcial</item>
+        <item>Examen Final</item>
+    </string-array>
+
+    <!-- Home -->
+    <string name="title_home">Parcial Pics</string>
+    <string name="sub_title_home">Panel Administrativo</string>
+    <string name="card_add_materia">Añadir Materia</string>
+    <string name="card_add_parcial">Añadir Parcial</string>
+    <string name="card_add_usuario">Añadir Usuario</string>
+    <string name="card_add_carrera">Añadir Carrera</string>
+    <string name="card_find_parcial">Consultar Parcial</string>
+    <string name="card_find_usuario">Consultar Usuario</string>
+    <string name="card_find_carrera">Consltar Carrera</string>
+
+    <!--  Subir Imagenes  -->
+    <string name="title_add_imagen">Subir Parciales</string>
+    <string name="title_add_imagen_materia">Nombre de la Materia</string>
+    <string name="title_add_imagen_semestre">Semestre del Parcial</string>
+    <string name="title_add_imagen_parcial">Tipo de Parcial</string>
+
 </resources>

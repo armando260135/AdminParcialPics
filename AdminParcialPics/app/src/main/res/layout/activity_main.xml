@@ -28,7 +28,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="14dp"
-        android:text="Parcial Pics"
+        android:text="@string/title_home"
         android:textSize="30sp"
         android:textColor="@color/white"
         app:fontFamily="@font/typo_round_bold_demo"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:text="Panel Administrativo"
+        android:text="@string/sub_title_home"
         android:textColor="@color/white"
         app:fontFamily="@font/typo_round_bold_demo"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
@@ -112,7 +112,7 @@
                             android:layout_below="@id/bus"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:text="Añadir Materia"
+                            android:text="@string/card_add_materia"
                             android:textSize="18sp"
                             app:fontFamily="@font/typo_round_bold_demo" />
 
@@ -146,7 +146,7 @@
                             android:layout_below="@id/imageView3"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:text="Añadir Parcial"
+                            android:text="@string/card_add_parcial"
                             android:textSize="18sp"
                             app:fontFamily="@font/typo_round_bold_demo" />
 
@@ -191,7 +191,7 @@
                             android:layout_below="@id/bus1"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:text="Añadir Usuario"
+                            android:text="@string/card_add_usuario"
                             android:textSize="18sp"
                             app:fontFamily="@font/typo_round_bold_demo" />
 
@@ -224,7 +224,7 @@
                             android:layout_below="@id/train"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:text="Añadir Carrera"
+                            android:text="@string/card_add_carrera"
                             android:textSize="17sp"
                             app:fontFamily="@font/typo_round_bold_demo" />
 
@@ -270,7 +270,7 @@
                             android:layout_below="@id/iconoConsultaPa"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:text="Consultar Parcial"
+                            android:text="@string/card_find_parcial"
                             android:textSize="18sp"
                             app:fontFamily="@font/typo_round_bold_demo" />
 
@@ -304,7 +304,7 @@
                             android:layout_below="@id/imageConsultUsuario"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:text="Consultar Usuario"
+                            android:text="@string/card_find_usuario"
                             android:textSize="18sp"
                             app:fontFamily="@font/typo_round_bold_demo" />
 
@@ -350,7 +350,7 @@
                             android:layout_below="@id/iconoConsultaCa"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:text="Consultar Carrera"
+                            android:text="@string/card_find_carrera"
                             android:textSize="18sp"
                             app:fontFamily="@font/typo_round_bold_demo" />
 

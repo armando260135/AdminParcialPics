@@ -30,8 +30,6 @@ public class SubirParciales extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.uploadImageView)
     ImageView mUploadImageView;
-    EditText editTextTextImgFolder,editTextTextImgSubFolder;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

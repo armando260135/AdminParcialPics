@@ -36,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -94,20 +95,7 @@ public class MainActivity extends AppCompatActivity {
         cerrarmateria = contactPopupView.findViewById(R.id.cerrarparcial);
         spinnermaterias = contactPopupView.findViewById(R.id.spinnerMateriasma);
 
-        String []materias={
-                "Base De Datos",
-                "Inteligencia Artificial",
-                "Calculo Integral",
-                "Calculo Diferencial",
-                "Analisis Numerico",
-                "Algebra Lineal",
-                "Circuitos Logicos",
-                "Electronica General",
-                "Emprendimiento",
-                "Ecuaciones Diferenciales",
-                "Ondas y Particulas"};
-
-        ArrayAdapter<String> adapterMaterias = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, materias);
+        ArrayAdapter<String> adapterMaterias = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre,getResources().getStringArray(R.array.listmaterias));
         spinnermaterias.setAdapter(adapterMaterias);
 
         spinnermaterias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -131,10 +119,10 @@ public class MainActivity extends AppCompatActivity {
                 iddrawable = getResources().getIdentifier(codigoicono, "drawable", getPackageName());
 
                 if (TextUtils.isEmpty(codigoicono)){
-                    ingresaricono.setError("Ingrese un icono");
+                    ingresaricono.setError(getResources().getString(R.string.input_error));
                     ingresaricono.requestFocus();
                 }else if (TextUtils.isEmpty(codigo)){
-                    etCodigo.setError("Ingrese un codigo");
+                    etCodigo.setError(getResources().getString(R.string.input_error));
                     etCodigo.requestFocus();
                 }else {
                     MateriasHome materiasHome = new MateriasHome();
@@ -149,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
                     etCodigo.setText("");
                     ingresaricono.setText("");
-                    Toast.makeText(MainActivity.this, "Materia Registrada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.materia_succesful), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -176,37 +164,11 @@ public class MainActivity extends AppCompatActivity {
         spinnermaterias = contactPopupView2.findViewById(R.id.spinnerMaterias);
         cerrarsubirfoto = contactPopupView2.findViewById(R.id.cerrar);
 
-        String []materias={
-                "Base De Datos",
-                "Inteligencia Artificial",
-                "Calculo Integral",
-                "Calculo Diferencial",
-                "Analisis Numerico",
-                "Algebra Lineal",
-                "Circuitos Logicos",
-                "Electronica General",
-                "Emprendimiento",
-                "Ecuaciones Diferenciales",
-                "Ondas y Particulas"};
-
-        String []semestres={
-                "Semestre 2020 - 1",
-                "Semestre 2020 - 2",
-                "Semestre 2021 - 1",
-                "Semestre 2021 - 2",
-                "Semestre 2022 - 1",
-                "Semestre 2022 - 2"};
-
-        String []tipoParciales={
-                "1 Parcial",
-                "2 Parcial",
-                "Examen Final"};
-
-        ArrayAdapter<String> adapterMaterias = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, materias);
+        ArrayAdapter<String> adapterMaterias = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre,getResources().getStringArray(R.array.listmaterias));
         spinnermaterias.setAdapter(adapterMaterias);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.text_spinner_semestre, semestres);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.text_spinner_semestre, getResources().getStringArray(R.array.listsemestres));
         spinnersemestres.setAdapter(adapter);
-        ArrayAdapter<String> adapterTipoParcial = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, tipoParciales);
+        ArrayAdapter<String> adapterTipoParcial = new ArrayAdapter<String>(this,R.layout.text_spinner_semestre, getResources().getStringArray(R.array.listparciales));
         spinnertipoparcial.setAdapter(adapterTipoParcial);
 
         spinnermaterias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -280,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode == File){
             if(resultCode == RESULT_OK){
-                progressDialogParcial.setTitle("Subiendo Imagen");
-                progressDialogParcial.setMessage("Por Favor Espere un Momento");
+                progressDialogParcial.setTitle(R.string.upload_image);
+                progressDialogParcial.setMessage(getResources().getString(R.string.moment_upload));
                 progressDialogParcial.setCancelable(false);
                 progressDialogParcial.show();
 
@@ -290,6 +252,8 @@ public class MainActivity extends AppCompatActivity {
                 StorageReference Folder2 = Folder.child(subcarpeta);
                 StorageReference Folder3 = Folder2.child(subsubcarpeta);
                 final StorageReference file_name = Folder3.child("file"+FileUri.getLastPathSegment());
+
+                //codigo para comprimir imagen
 
                 try {
                     imageStream = getContentResolver().openInputStream(FileUri);
@@ -300,14 +264,15 @@ public class MainActivity extends AppCompatActivity {
 
                 if (originBitmap != null) {
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    //modificar el quality para mayor calidad pero mayor peso ojo!
                     originBitmap.compress(Bitmap.CompressFormat.JPEG, 35, byteArrayOutputStream);
                     UploadTask uploadTask = file_name.putBytes(byteArrayOutputStream.toByteArray());
 
                     uploadTask.continueWithTask(task -> {
                         if (task.isSuccessful()) {
                             progressDialogParcial.dismiss();
-                            Toast.makeText(MainActivity.this, "Imagen Subida Correctamente", Toast.LENGTH_LONG).show();
-                            Log.d("Mensaje", "Se subió correctamente");
+                            Toast.makeText(MainActivity.this, R.string.upload_succesful, Toast.LENGTH_LONG).show();
+                            Log.d("Mensaje", getResources().getString(R.string.upload_succesful));
                             throw task.getException();
 
                         }
