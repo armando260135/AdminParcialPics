@@ -1,5 +1,6 @@
 package com.example.adminparcialpics;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,12 +11,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,8 +25,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,23 +42,22 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-
+import java.util.Map;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    private Button addMaterias;
-    private CardView cardmateria,cardParcial;
-    private EditText etCodigo,ingresaricono;
-    private TextView cerrarsubirfoto,cerrarmateria;
-    private String materia, codigo,codigoicono;
+    private Button addMaterias,registrarUsuario;
+    private CardView cardmateria,cardParcial,cardUsuario;
+    private EditText etCodigo,ingresaricono,etEmail ,etPassword;
+    private TextView cerrarsubirfoto,cerrarmateria,cerraragregarusuario;
+    private String materia, codigo,codigoicono,userID;
     private int iddrawable;
-    private AlertDialog.Builder dialogBuilder,dialogBuilder2;
-    private AlertDialog dialog,dialog2;
+    private AlertDialog.Builder dialogBuilder,dialogBuilder2,dialogBuilderUsuario;
+    private AlertDialog dialog,dialog2,dialogusuario;
     private Spinner spinnermaterias,spinnersemestres,spinnertipoparcial;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     //subir img
     private static final int File = 1 ;
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @BindView(R.id.uploadImageView)
     ImageView mUploadImageView;
-    private ProgressDialog progressDialogParcial;
+    private ProgressDialog progressDialogParcial,progressDialogRegisterUser;
     public static String carpeta = "";
     public static String subcarpeta = "";
     public static String subsubcarpeta = "1 Parcial";
@@ -70,20 +76,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         cardmateria = findViewById(R.id.cardMateria);
         cardParcial = findViewById(R.id.cardParcial);
+        cardUsuario = findViewById(R.id.cardUsuario);
+        progressDialogRegisterUser = new ProgressDialog(this);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         cardmateria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 crearNuevaMateria();
             }
         });
+
         cardParcial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 crearNuevoParcial();
             }
         });
-    }
 
+        cardUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crearNuevoUsuario();
+            }
+        });
+    }
     public void crearNuevaMateria(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View contactPopupView = getLayoutInflater().inflate(R.layout.layout_bottom_anadir_materias,null);
@@ -109,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 
             }
         });
-
 
         addMaterias.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         spinnersemestres.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -227,6 +243,72 @@ public class MainActivity extends AppCompatActivity {
         dialog2.show();
     }
 
+    public void crearNuevoUsuario(){
+        dialogBuilderUsuario = new AlertDialog.Builder(this);
+        final View contactPopupViewUsuario = getLayoutInflater().inflate(R.layout.layout_agregar_usuario,null);
+        etEmail = contactPopupViewUsuario.findViewById(R.id.etxIngresarMail);
+        etPassword = contactPopupViewUsuario.findViewById(R.id.etxIngresarPassword);
+        registrarUsuario = contactPopupViewUsuario.findViewById(R.id.btn_registrar_usuario);
+        cerraragregarusuario = contactPopupViewUsuario.findViewById(R.id.txt_cerrar);
+
+        registrarUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mail = etEmail.getText().toString();
+                String password = etPassword.getText().toString();
+                progressDialogRegisterUser.setTitle(getResources().getString(R.string.txt_progress_title_register));
+                progressDialogRegisterUser.setMessage(getResources().getString(R.string.moment_upload));
+                progressDialogRegisterUser.show();
+
+                mAuth.createUserWithEmailAndPassword(mail, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            userID = mAuth.getCurrentUser().getUid();
+                            DocumentReference documentReference = db.collection("usersFromAdmin").document(userID);
+
+                            Map<String,Object> user = new HashMap<>();
+                            user.put("Nombre",mail);
+                            user.put("Password", password);
+
+                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d("TAG","onSuccess: Datos Registrados" + userID);
+                                    progressDialogRegisterUser.dismiss();
+                                }
+                            });
+                            progressDialogRegisterUser.dismiss();
+                            etEmail.setText("");
+                            etPassword.setText("");
+                            Toast.makeText(MainActivity.this,getResources().getString(R.string.txt_toast_usuario), Toast.LENGTH_SHORT).show();
+                        }else{
+                            progressDialogRegisterUser.dismiss();
+                            Toast.makeText(MainActivity.this, getResources().getString(R.string.txt_toast_usuario_fallido) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialogRegisterUser.dismiss();
+                        Toast.makeText(MainActivity.this, getResources().getString(R.string.txt_toast_usuario_consulta_fallida) + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        cerraragregarusuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogusuario.dismiss();
+            }
+        });
+
+        dialogBuilderUsuario.setView(contactPopupViewUsuario);
+        dialogusuario = dialogBuilderUsuario.create();
+        dialogusuario.show();
+    }
+
     public void fileUpload() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -254,7 +336,6 @@ public class MainActivity extends AppCompatActivity {
                 final StorageReference file_name = Folder3.child("file"+FileUri.getLastPathSegment());
 
                 //codigo para comprimir imagen
-
                 try {
                     imageStream = getContentResolver().openInputStream(FileUri);
                     originBitmap = BitmapFactory.decodeStream(imageStream);
@@ -274,7 +355,6 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, R.string.upload_succesful, Toast.LENGTH_LONG).show();
                             Log.d("Mensaje", getResources().getString(R.string.upload_succesful));
                             throw task.getException();
-
                         }
                         return null;
                     }).addOnCompleteListener(task -> {

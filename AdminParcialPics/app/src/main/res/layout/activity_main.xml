@@ -177,7 +177,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="10dp">
+                    app:cardCornerRadius="10dp"
+                    android:id="@+id/cardUsuario">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
