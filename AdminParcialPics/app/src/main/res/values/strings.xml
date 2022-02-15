@@ -69,5 +69,8 @@
     <string name="txt_toast_usuario">Registro Exitoso</string>
     <string name="txt_toast_usuario_fallido">Registro Fallido</string>
     <string name="txt_toast_usuario_consulta_fallida">Ha Ocurrido un Error Inesperado</string>
+    <string name="txt_correo">Correo Electronico</string>
+    <string name="txt_contrasena">Contraseña</string>
+    <string name="txt_tittle_usuario">Agregar Usuario</string>
 
 </resources>

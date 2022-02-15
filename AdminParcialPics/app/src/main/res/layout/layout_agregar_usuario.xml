@@ -16,7 +16,7 @@
         android:fontFamily="@font/typo_round_bold_demo"
         android:gravity="center"
         android:padding="15dp"
-        android:text="@string/title_add_imagen"
+        android:text="@string/txt_tittle_usuario"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -35,7 +35,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="9dp"
         android:fontFamily="@font/typo_round_bold_demo"
-        android:text="Correo Electronico"
+        android:text="@string/txt_correo"
         android:textSize="19sp"
         android:textStyle="bold"
         android:layout_gravity="center"/>
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="9dp"
         android:fontFamily="@font/typo_round_bold_demo"
-        android:text="Contraseña"
+        android:text="@string/txt_contrasena"
         android:textSize="19sp"
         android:textStyle="bold"
         android:layout_gravity="center"/>
