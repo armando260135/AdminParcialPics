@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
                 if (originBitmap != null) {
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     //modificar el quality para mayor calidad pero mayor peso ojo!
-                    originBitmap.compress(Bitmap.CompressFormat.JPEG, 35, byteArrayOutputStream);
+                    originBitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
                     UploadTask uploadTask = file_name.putBytes(byteArrayOutputStream.toByteArray());
 
                     uploadTask.continueWithTask(task -> {
