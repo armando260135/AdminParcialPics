@@ -19,17 +19,58 @@
     <string name="title_btn_registar">Registrar</string>
 
     <string-array name="listmaterias">
+<!--     programacion   -->
+        <item>Fundamentos de Programacion</item>
+        <item>Programacion 1</item>
+        <item>Programacion 2</item>
+        <item>Estrucutra de Datos</item>
+        <item>Analisis y diseños de S</item>
         <item>Base De Datos</item>
+        <item>Gestion de BD</item>
+<!--   subprogramacion     -->
+        <item>Analisis y Algoritmos</item>
+        <item>Ingenieria de Software</item>
         <item>Inteligencia Artificial</item>
-        <item>Calculo Integral</item>
+        <item>Auditoria de Sistemas</item>
+        <item>Arquitectura Empresarial</item>
+<!--   calculos     -->
         <item>Calculo Diferencial</item>
-        <item>Analisis Numerico</item>
-        <item>Algebra Lineal</item>
-        <item>Circuitos Logicos</item>
-        <item>Electronica General</item>
-        <item>Emprendimiento</item>
+        <item>Calculo Integral</item>
+        <item>Calculo Vectorial</item>
         <item>Ecuaciones Diferenciales</item>
+        <item>Analisis Numerico</item>
+<!--    fisica    -->
+        <item>Fisica Mecanica</item>
+        <item>Electromagnetismo</item>
         <item>Ondas y Particulas</item>
+        <item>Electronica General</item>
+        <item>Circuitos Logicos</item>
+<!--    continuacion de linea fisica    -->
+        <item>Emprendimiento</item>
+        <item>Metodologia de Investigacion</item>
+        <item>Tecnicas de Investigacion</item>
+        <item>Practicas en sistemas</item>
+        <item>Proyectos 1</item>
+        <item>Proyectos 2</item>
+        <item>Etica Profesional</item>
+<!--    matematicas    -->
+        <item>Matematicas Discretas</item>
+        <item>Algebra Lineal</item>
+        <item>Probabilidad y Estaditica</item>
+        <item>Investigacion de Operaciones</item>
+<!--    varias    -->
+        <item>Introduccion a la Ingenieria</item>
+        <item>Electiva Institucional</item>
+        <item>Teoria General de Comunicacion</item>
+        <item>Desarrollo Nuevas Tecnologias</item>
+        <item>Tendecias en Ing. Sistemas</item>
+        <item>Electiva Tecnica</item>
+        <item>Arquitectura de Computadores</item>
+        <item>Sistemas Operativos l</item>
+        <item>Redes y Computadores</item>
+        <item>Administracion de Servidores</item>
+        <item>Sistemas Operativos ll</item>
+
     </string-array>
 
     <string-array name="listsemestres">
