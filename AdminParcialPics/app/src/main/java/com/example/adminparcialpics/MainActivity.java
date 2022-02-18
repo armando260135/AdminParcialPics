@@ -133,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 codigo = etCodigo.getText().toString();
                 codigoicono=ingresaricono.getText().toString();
-                iddrawable = getResources().getIdentifier(codigoicono, "drawable", getPackageName());
-
                 if (TextUtils.isEmpty(codigoicono)){
                     ingresaricono.setError(getResources().getString(R.string.input_error));
                     ingresaricono.requestFocus();
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     etCodigo.requestFocus();
                 }else {
                     MateriasHome materiasHome = new MateriasHome();
-                    materiasHome.setFoto(iddrawable);
+                    materiasHome.setFoto(codigoicono);
                     materiasHome.setNombre(materia);
                     materiasHome.setCodigo(codigo);
                     //instancia de la bd en firebase

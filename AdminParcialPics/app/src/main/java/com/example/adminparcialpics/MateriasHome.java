@@ -3,7 +3,7 @@ package com.example.adminparcialpics;
 public class MateriasHome {
 
     private String nombre;
-    private int foto;
+    private String foto;
     private String codigo;
     public MateriasHome(){}
 
@@ -15,7 +15,7 @@ public class MateriasHome {
         this.codigo = codigo;
     }
 
-    public MateriasHome(String nombre, int foto, String codigo) {
+    public MateriasHome(String nombre, String foto, String codigo) {
         this.nombre = nombre;
         this.foto = foto;
         this.codigo = codigo;
@@ -30,11 +30,11 @@ public class MateriasHome {
         this.nombre = nombre;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 }
