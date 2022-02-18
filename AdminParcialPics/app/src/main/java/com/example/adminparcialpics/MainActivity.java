@@ -265,11 +265,13 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             userID = mAuth.getCurrentUser().getUid();
-                            DocumentReference documentReference = db.collection("usersFromAdmin").document(userID);
+                            DocumentReference documentReference = db.collection("users").document(userID);
 
                             Map<String,Object> user = new HashMap<>();
-                            user.put("Nombre",mail);
+                            user.put("Nombre", "Invitado");
                             user.put("Password", password);
+                            user.put("Correo", mail);
+                            user.put("Telefono", "0000000000");
 
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
